@@ -1,0 +1,6 @@
+ls
+mkdir temp
+ls
+rmdir temp
+ls
+printenv

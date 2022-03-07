@@ -1,0 +1,3 @@
+This is a newfile to be transferred from the client to server
+
+This should also be transfered.

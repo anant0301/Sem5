@@ -1,0 +1,16 @@
+000, some_guy_000
+001, some_guy_001
+002, some_guy_002
+003, some_guy_003
+004, some_guy_004
+005, some_guy_005
+006, some_guy_006
+007, some_guy_007
+008, some_guy_008
+009, some_guy_009
+010, some_guy_010
+011, some_guy_011
+012, some_guy_012
+013, some_guy_013
+-1, -1
+-1, -1

@@ -1,0 +1,126 @@
+------------------------------------------------------------------------------------------------------------------------------------
+//// Physical Layer
+
+Latency 	= propagation time + transmission time + queuing time + processing delay
+
+Transmission time = Message size / Bandwidth
+
+Bandwidth 	= freq_high - freq_low
+
+wavelength 	= Propagation Speed * Period
+		= Propagation Speed / Frequency
+
+Bit length = propagation speed x bit duration
+
+// L is level of signal
+// bandwidth here is the frequency range of the channel
+BitRate = 2 x bandwidth x log2(L)
+
+Capacity = bandwidth X log2 (1 + SNR)
+
+// Baud Rate = No of Signals / Time Taken for transfer
+
+Baud Rate = CaseFactors * Bit Rate / (data element / equivalient signal element)
+
+Nmax = Baud Rate * (data element / equivalent signal element) / Case Factors
+
+Complexity = Data element / Signal Element
+
+-------------------------------------------------------------------------------------------------------------------------------------//// Data Link Layer
+
+Total Time (Stop and Wait Protocol) = (Transmission Delay + Propagation Delay + Queuing Delay + Processing Delay)for acknowledgement and data packet==(approx)==> (Transmission Delay + Propagation Delay)packet + propagation delay for acknowledgement
+
+Throughput = No of useful packet send per second = Efficiency * Bandwidth 
+Round Trip Time = 2 * Propagation Delay
+Tt-- Transmission Time
+Tp-- Propagation Time
+
+Tp = Distance / Speed
+Tt = Packet Size / Bandwidth
+Link Utilization = Bandwidth Utilization =  Efficiency = Tt/(Tt + 2*Tp)
+
+For sliding window--- optimal window size = 1 + 2*a |||||||  	general for all sliding window subsets 
+where a = Tp / Tt
+Min bits requiered by the sequence number = [log2(1+2*a)] -- ceil function
+Efficiency = Number of frames in the window sent / (total number of frames possible in the window size)
+= sender window size / optimal window size
+= sender window size / 1 + 2*a
+
+Sliding window = Window + Sequence number over the stop and wait ARQ
+stop wait ARQ = stop n wait + timer + sequence number
+
+------------------------------------------------------------------------------------------------------------------------------------
+//// Access Control Methods
+// Time Division Multiplexing
+Effieciency = Tt/(Tt + Tp)
+Maximum Available Effective Bandwidth = Total number of stations * Bandwidth requirement of 1 station
+// Polling 
+Tpoll = Time taken for polling
+Tsend = Time taken for sending the data = Transmission delay + Propagation delay = Tt + Tp
+Effieciency = Tt/(Tt + Tp + Tpoll)
+// CMSA/CD
+Transmission delay >= 2 x Propagation delay
+Transmission delay = Length of data packet (L) / Bandwidth (B)
+Propagation delay = Distance between the two stations (D) / Propagation speed (V)
+L >= 2 * B * D / V ===> Packet size >= 2 x (distance / speed) x Bandwidth
+Useful time = Transmission delay of data packet = Tt
+Useless time = Time wasted during collisions + Propagation delay of
+data packet = c x 2 x Tp + Tp
+Here, c = Number of contention slots / collision slots.
+Avg no of collisions = e
+c = e
+Efficieny = 1 / (1 + 6.64 * a)
+in the algorithm (Binary Exponential Backoff-Algorithm)----
+Backoff time = k * Round trip time
+// Token Ring
+Ring Latency[in seconds] = distance[of ring] / speed [in the network] + Number of stations * Bit hold by each station
+Token hold time = THT
+Number of Stations = N
+Cycle Time = Tp + N * THT
+token passing Efficiency = N * Tt / (Tp + N * THT) 
+-- Delayed Token Reinsertion 
+THT = Tt + Tp
+-- Early Token Reinsertion
+THT = Tt
+// Aloha
+-- Pure Aloha
+Efficiency = G * e ^ (-2 * G)
+G is number of stations willing to transmit
+By probablistic anaylsis	
+Max Efficiency = 18.4 %
+-- Slotted Aloha
+Efficiency = G * e ^ (-G)
+G is number of stations willing to transmit
+By probablistic anaylsis	
+Max Efficiency = 36.8 %
+
+------------------------------------------------------------------------------------------------------------------------------------
+
+//// Switching
+-- Circuit Switching
+Total time taken to transmit a message= Connection set up time + Transmission delay + Propagation delay + Tear down time
+Transmission delay = Message size / Bandwidth
+Propagation delay = (Number of hops on way x Distance between 2 hops) / Propagation speed
+
+------------------------------------------------------------------------------------------------------------------------------------
+
+//// IP Addressing
+-- Classless Addressing Format
+a.b.c.d / n --- n is the size of the block and the rest forms the IP address of the block
+
+
+//Subnet Mask Calculation
+The number of bits in of the global network and number of bits in the subnet ID shared across- set these all bits to 1 and rest as 0
+eg. 
+200.1.1.0 has 4 subnets
+200.1.1.0
+200.1.1.64
+200.1.1.128
+200.1.1.192
+The subnet mask for the system is (as it is a fixed length subnetting the subnet mask is same)
+For each subnet, subnet mask is obtained-
+By setting the first 26 bits to 1.
+By setting the remaining 6 bits to 0.
+Subnet mask = 11111111.11111111.11111111.11000000 = 255.255.255.192
+
+

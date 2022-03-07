@@ -1,0 +1,11 @@
+********************************************************************
+The new element in the question for this week's lab session is implementation of the latency control in the file itself instead of executing the commands available in bash shell.
+
+The latency refers to the delay experienced in data transfer when between the sender and receiver, here this delay is measured by sending a packet from the client containing the clock instance wrt the terminal, this is achieved using the clock() function.
+Now the when the receiver receives the clock interval it can subtract this with the clock instance and by dividing this number by the CLOCKS_PER_SEC we directly get the latency in seconds
+
+********************************************************************
+The UDP packet loss problem:
+Here the UDP packet loss can vastly distort the image received as compared to the image sent hence to reduced the amount of data loss the transfer is done bit by bit. The optimum way to send through UDP could be by using Stop & wait Protocol or Sliding window protocols but implementation of these out of the scope of the question.
+
+********************************************************************

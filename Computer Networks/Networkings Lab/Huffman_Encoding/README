@@ -1,0 +1,6 @@
+for the Makefile to work properly the folder structure is needed to be maintained.
+I have used intermediate files for transfer of tree and these files are
+'encoded_file.txt'
+'var_recv_tree.txt'
+
+For checking the working i have used serv_read.txt...

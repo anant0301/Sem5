@@ -1,0 +1,2 @@
+this file contains the test data for huffman encoding
+this is the next line of input for huffman testing

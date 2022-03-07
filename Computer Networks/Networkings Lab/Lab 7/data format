@@ -1,0 +1,6 @@
+just after connection request is sent by the client side of the program the client sends its own id and connection time
+
+1 device sends one line at a time, no spaces--
+format::: 
+id_time_taken;id_time_taken;...
+by doing so the 

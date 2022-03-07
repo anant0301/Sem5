@@ -1,0 +1,251 @@
+Go back N ARQ:
+Sender Window Size = N
+Receiver Window Size = 1
+Go back N uses cumulative acknowledgments.
+Each time the receiver receives a new frame, it starts a new acknowledgment timer.
+A new acknowledgment timer does not start after the expiry of old acknowledgment timer.
+
+Go back n will still be called Go Back n if sends the individual ack to every frame
+Go silently (no neg ack) disacrds Corrupted or out of order frames... the order is checked by the sequence number of the frame...
+Only after the expiry of the timer will Go Back N request retransmission of frames 
+
+------------------------------------------------------------------------------------------------------------------------------------
+
+Selective Repeat ARQ:
+2^(n-1) >= Sender window size = Receiver Window Size > 1
+for n bit in Seq no bits... 
+Receiver sends ack for each frame independently
+Receiver sends neg ack for corrupted frames 
+The ack for out of order frame is sent as such
+Due to the above this protocol require sorting the received frames
+
+The sender in Selective Repeat ARQ has to find missing ack for the frames that go missing and retraansmit them ... searching of these frames with correspponding ack is needed
+Thus, only the selected frame is repeated and not the entire window.
+That is why, the protocol has been named as Selective Repeat Protocol.
+If the neg ack is reeived for a frame then it can immediately sent to the receiver again
+
+------------------------------------------------------------------------------------------------------------------------------------
+
+Cyclic Redundancy Check
+The power of each term gives the position of the bit and the coefficient gives the value of the bit.
+Rule 1:
+It should not be divisible by x... This condition guarantees that all the burst errors of length equal to the length of polynomial are detected.
+Rule 2:
+It should be divisible by x+1... This condition guarantees that all the burst errors affecting an odd number of bits are detected.
+Check Lecture_17.pdf for fuller understanding.. in the folder
+
+------------------------------------------------------------------------------------------------------------------------------------
+
+Checksum
+Sender side---
+If m bit check sum is used then the transmitted data is divided into bit strings of length m each
+after this these bit strings are added to form another bit string... 
+if the bit string of the sum exceeds m bits the take the MSBs and add them to the LSBs (any number of MSB required)
+Takes 1's Complement of the resultant sum --- this 1's complemented bit string is the Checksum
+
+At the receiver side---
+sum of all m length bit strings + checksum == 111.. m times... --- 1's complement = 000.. m times 
+if the result is 0 then successful receiving the data 
+else the received data is corrupted
+
+------------------------------------------------------------------------------------------------------------------------------------
+
+Access Control Methods
+
+Time Division Multiplexing
+The stations are given time slots in which they are allowed to send data.
+
+Polling
+The stations are to poll to get a chance at getting to transmit data.
+
+Carrier Sense Multiple Access / Collision Detection -- CSMA / CD
+The packets are sent directly and then if there is collision it is detected by the 2 or more stations that sent this packet and then a jamming signal(48 bits) is passed and then using Binary Exponential Backoff Algorithm the same packets are sent by there respective stations.
+Binary Exponential Backoff Algorithm
+The stations maintain a count for number of collision for the same packet, and then a number is randomly choosen from the 
+[1 .. 2^k - 1], this number times the Round Trip Time is the wait time before which the re-transmition of the same packet is done... 
+The count of collision is increased if the same token collides again.
+The count of collision is set to 0 when the packet is transmitted completely without collision.
+
+Token Passing -- Token Ring Mech
+Whoever has the token has the right to transmit the data.
+Two Types:
+--> Delayed Token Passing - The packet is released from the station having the token, the packet is retransmitted at each station in the ring topology and the packet is received by the one for whom it is sent, but the packet is still retransmitted by this staion and sent. The packet ultimately reaches back to the station which sent it and this station eliminates the packet transmission and releases the token for next station.
+--> Early Token Passing - The packet is released and the token just after it, the packet is retransmitted and the token is held by the next station, which after sending it's own packet releases the token. By this the token is always after the packet transmitted in the ring, only the station who sent the packet can remove it's packet from network.
+
+Aloha 
+--> Pure Aloha
+Transmission at any time, if the acknowledgement from the sender is received then the okay otherwise resend after some back-off time decided by the back-off strategy used.
+--> Slotted Aloha
+The transmission time for a channel is divided into discrete time intervals, the transmission can be done by any station but the transmission must coincide with the beginning of the next time interval.
+
+------------------------------------------------------------------------------------------------------------------------------------
+
+Ethernet
+
+IEEE 802.3 Ethernet Frame Format
+7B				- Preamble = Alerting the station that the transmission has begun
+1B				- Start Frame Delimiter (SFD) = 10101011, sometimes the SFD is considered part of Preamble(8B)
+6B				- Destination Address  = MAC Address of the destination
+6B				- Source Address = MAC Address of the source
+2B				- Length = Gives the number of bytes in the data field... implies, variable frame length of the Ethernet Frame
+46-1500B	- Data = Contains the data
+4B				- Frame Sequence Check (CRC) = Contains the Cyclic Redundancy Check  
+
+Notes: 
+--  2B = 2^16 -1 ---> 65535, but to prevent monoloy by a station 1500 is the limit of data field.
+-- Minimum length of the data field is 46B as Ethernet uses CSMA / CD hence 
+Packet Size >= 2 * Tp * Bandwidth
+The value are definite for the Ethernet and we would get 72B but the other fields take about 4+2+6+6+1+7 = 26B... hence the minimum data needs to be 72-26 = 46B
+*--* The Data in the Ethernet Frame furhter divided as--
+14B				- Ethernet Header
+20B				- IP Header
+20B				- TCP Header
+6-1460B		- Payload / Data of the packet
+4B				- CRC
+
+------------------------------------------------------------------------------------------------------------------------------------
+
+Switching
+--> Circuit Switching
+A definite path is created between the two links, here the packets are only transmitted along this path and the nodes are completely monopolised by this method.
+--> Message Switching
+The entire message is treated as a single data unit.
+The message is then forwarded from hop to hop.
+--> Packet Switching
+ -- Datagram Switching
+ 		The packets are sent to the network, with the destination address.
+ -- Virtual Circuit Switching
+ 		There is a path created between source and destination address, by the first packet, the resources here are also reserved for the purpose	
+
+------------------------------------------------------------------------------------------------------------------------------------
+
+Routing Algorithms
+--> Static Routing Algorithm 
+	The distance between the nodes is manually inputted everytime the network changes, the updated distances paths all are updated.
+--> Dynamoic Routing Algorithm
+	The distance between the nodes is recalculated every time the a new node connects/ a node disconnects.
+-- Distance Vector Routing
+The nodes send each other their complete routing table and update their existing routing table, every time a new routing table is received, but this is only done when there is a change in the existing network setup.
+
+------------------------------------------------------------------------------------------------------------------------------------
+
+IP Address
+-- Static IP Address: The IP assigned doesn't change and is constant for the device.
+-- Dynamic IP Address: The IP assigned is given by service provider and hence can be allocated randomly by the service provider and can change.
+	--DHCP or PPPoE assigns dynamic IP addresses
+IP Address -- 4B = 32 bits
+IP Addressing Types
+Network ID + Host ID = 32 bits
+---> Classful Addressing
+-- Class A = NetID(8 bits) + HostID(24 bits) -- starting with 0
+-- Class B = NetID(16 bits) + HostID(16 bits) -- starting with 10
+-- Class C = NetID(24 bits) + HostID(8 bits) -- starting with 110
+-- Class D = ID(32 bits) -- starting with 1110 (not in use)
+-- Class E = ID(32 bits) -- starting with 1111 (not in use)
+
+---> Classless Addressing
+	CIDR -- Classless Inter Domain Routing
+	CIDR block are made containing some number of IP Addresses-
+		|-->	All IPs in the CIDR block are contiguous
+		|-->	Size of any CIDR block will always be in the form 2^1 , 2^2 , 2^3 , 2^4 , 2^5 so on.
+		|--> 	The address of the first IP address must be divisible by the size of IP address. 
+
+Subnet Masking
+Each subnet has its own unique network address - Subnet ID.
+The subnet ID is created by borrowing some bits from the Host ID part of the IP Address.
+The number of bits borrowed depends on the number of subnets created.
+Types:
+ -- Fixed Length / Classful Subnetting		-- Every part of the subnet mask has the same number of hosts
+ 																					-- Same subnet mask
+ -- Variable Length / Classless Subnetting-- The number of hosts need not be equal across all the subnets
+  																				-- Different subnet mask
+
+------------------------------------------------------------------------------------------------------------------------------------
+
+IPv4
+4 bits		- Version= field to signify IPv4 is used... set to 0100
+4 bits		- Header Length Field = Helps to know where the data actually begins, IP header always lies in [20B..60B]
+8 bits		- Types of Services= The datagram is marked for giving a certain treatment using this field
+16 bits		- Total Length = Header + Payload -- [20B..65535B]
+16 bits		- Identification = Used to identify fragmentation is there or not, if two packets have same identification they are fragmented, the fragment offset field would contains things related to order of the fragments.
+1 bit 		- always set to 0
+1 bit			- DF = Do not Fragment Bit.. D = 0 -- Fragment if required DF = 1 .. don't fragment/ it will discard if not possible
+1 bit			- MF = More Fragment bit.. MF = 0 current fragment is the last or the only fragment, MF = 1 wait for the other fragments
+13 bits		- Fragment Offset = The position of the fragment in the original IP datagram.. value = number of data Bytes ahead of it
+8 bits		- TTL = Time to Live = Max hops that can be made to get the datagram to the destination address.
+8 bits 		- Protocol = It tells the destination host which protocal the datagram belongs to.
+16 bits		- Header Checksum = Contains the checksum value for the entire header.
+32 bits		- Source IP Address 
+32 bits		- Destination IP Address
+0-40B			- Options = Different purposes like = Record Route, Source Routing and even Padding
+					- Data 
+					
+Notes:
+--Scaling Factor:
+	Header length-- 4 bits == [0..15] <> [20B .. 60B]
+		scaling factor 4.
+		Header field length value * 4B= Header length
+	Fragment Offset-- 13 bits == 2^(16) / 2^(13) 
+		scaling factor 8.
+		16 bits -- total length field 
+		20 B -- minimum header length 
+-- Time to Live 
+	After each hop the TTL value is decreamented by 1.
+	TTL value must be greater than 0 before reaching destination.
+	If the value of TTL becomes zero at the destination, then the datagram is accepted.
+-- Protocol
+	Protocol number of ICMP is 1, IGMP is 2, TCP is 6 and UDP i 17.
+-- Header Checksum
+	At every hop the checksum is checked.
+-- Record Route
+	A record route option is used to record the IP Address of the routers through which the datagram passes on its way.
+	When record route option is set in the options field, IP Address of the router gets recorded in the Options field.
+	The maximum number of IPv4 router addresses that can be recorded in the Record Route option field of an IPv4 header is 9.
+-- Source Routing
+	A source routing option is used to specify the route that the datagram must take to reach the destination.
+-- Padding
+	Addition of dummy data to fill up unused space in the transmission unit and make it conform to the standard size = Padding
+	
+------------------------------------------------------------------------------------------------------------------------------------
+
+TCP Header
+16 bits					-- Source Port = Port of sending app.
+16 bits					-- Destination Port = Port of receiving app.
+32 bits					-- Sequence Number = This field contains the sequence number of the first data byte
+32 bits					-- Acknowledgement Number = It is always sequence number of the last received data byte incremented by 1
+4 bits					-- Header Length = Similar to IPv4 header length -- scaling and everything
+6 bits					-- Reserved Bit = Not used, reserved bits
+1 bit						-- URG Urgent = Priortize this packet when URG = 1 -- read from the urgent pointer field 
+1 bit						-- ACK Acknowledgement = Indicated whether the ACK number field is valid or not
+1 bit						-- PSH Push = Empty the receiving buffer to the receiving application
+1 bit						-- RST Reset = Tells the receiver to terminate the connection 'abnormally'.. used in case of unrecoverable errors 
+1 bit						-- SYN Synchronization = SYN = 1 -- tells the receiver that this is the initial sequence number. 
+1 bit						-- FIN Finish = To terminate the connection normally 
+16 bits					-- Window Size = Contains the size of the receiving window.. used in flow control
+16 bits					-- Check Sum = verifies the integrity of the payload .. used in error control
+16 bits					-- Urgent Pointer = Contains the urgent data that is to be sent when URG = 1
+0-40B 					-- Options = used for Time stamp, Window size extension, Parameter negotiation, Padding
+Data(Optional)	-- 
+Notes:
+	Number of urgent bytes = Urgent pointer + 1
+	End of urgent byte= Sequence number of the first byte in the segment + Urgent pointer
+// Time Stamp in the Options
+		Multiple segments having the same sequence number may appear at the receiver side
+		Then take the decision based on the age of the fragment.
+// Window Size Extension
+		if the window size is greater than 16 bits given.
+// Parameter Negotiation
+		During Connection establishment the sender and receiver have to spedify max.segment size, etc parameters.
+// Padding
+		Addition of dummy data to fill up unsed bits in the transmission
+		
+TCP Segment nubmer = 2^32 = 4GB data
+Wrap Around 
+	This is used when the TCP segments bits are completely 1, after this the wrap around time is set back to 1 and continues until the it reaches the initial segment number... then it resynchronizes with the receiver to check if it can use the sequence number sent before.
+	Wrap Around Time =  2 ^ 32 / Bandwidth
+Life Time of a TCP segment = 180 seconds
+	-- Wrap Around time is way more than this--- the limit wrap around time can be limited to the segments sent in the life time of TCP segment.
+	Number of bits required in the sequence number field so that wrap around time becomes equal to lifetime of TCP segment = log2(lifetime of TCP segment x Bandwidth)
+
+3 Way Handshake -- Establishing the TCP connection--- best refer the last slide
+

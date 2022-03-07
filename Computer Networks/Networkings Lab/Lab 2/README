@@ -1,0 +1,25 @@
+#  To execute do the following:
+
+#  get all the components in a folder, the said components are:
+
+#  arithematic.cpp  Makefile       tcpClient.h        tcpServer.h      udpClient.cpp  udpServer.h
+#  arithematic.h    README         tcpclientMain.cpp  tserverMain.cpp  udpClient.h    userverMain.cpp
+#  headers.h        tcpClient.cpp  tcpServer.cpp      uclientMain.cpp  udpServer.cpp
+
+
+#  go to terminal in th above directory and give command:
+make
+
+#  to run server UDP Server
+./userver
+
+#to run UDP client... the number1 = num1, operator = op and number2 = num2 
+./uclient num1 op num2
+
+
+#  to run server TCP Server
+./tserver
+
+#to run TCP client... the number1 = num1, operator = op and number2 = num2 
+./tclient num1 op num2
+

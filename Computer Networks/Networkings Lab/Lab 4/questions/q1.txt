@@ -1,0 +1,5 @@
+The ip used in the program
+a. 127.0.1.0
+b. 127.0.0.1
+c. 127.0.0.1
+d. 27.11.0.0
